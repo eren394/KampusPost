@@ -4,66 +4,49 @@
  *
  * @format
  */
+// App.tsx
 
 import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+// 1. Oluşturduğunuz ve var olan ekranları import edin
 import LoginScreen from './components/LoginScreen';
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import {
-  SafeAreaView,
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
-import {Text} from 'react-native';
+import RegisterScreen from './RegisterScreen';
+// Make sure HomeScreen exists at the correct path and extension
+import HomeScreen from './HomeScreen';
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+// Stack Navigator'ı oluşturun
+const Stack = createNativeStackNavigator();
 
+const App = () => {
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        <Text style={styles.welcomeText}>
-          Kampüs Post'a Hoş Geldiniz!
-        </Text>
-      </View>
-    </SafeAreaView>
+    // NavigationContainer kullanın
+    <NavigationContainer>
+      {/* createNativeStackNavigator kullanın */}
+      <Stack.Navigator 
+        // LoginScreen'in ilk açılış ekranı olduğunu gösterin
+        initialRouteName="Login" 
+      >
+        {/* Ekranları stack'e ekleyin */}
+        <Stack.Screen 
+          name="Login" 
+          component={LoginScreen} 
+          options={{ headerShown: false }} 
+        />
+        <Stack.Screen 
+          name="Register" 
+          component={RegisterScreen} 
+          options={{ title: 'Kayıt Ol' }}
+        />
+        <Stack.Screen 
+          name="Home" 
+          component={HomeScreen} 
+          options={{ title: 'Akış' }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-  return (
-    <LoginScreen /> 
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff', 
-  },
- 
-  content: {
-    flex: 1,
-    justifyContent: 'center', 
-    alignItems: 'center',     
-    padding: 20,
-  },
-  welcomeText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333', 
-    textAlign: 'center',
-  },
-});
-
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
-
-  return (
-    <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
-      />
-    </View>
-  );
-}
+};
 
 export default App;
